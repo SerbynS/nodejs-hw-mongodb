@@ -13,7 +13,6 @@ import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 export const getContactsController = async (req, res) => {
-
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
   const filter = parseFilterParams(req.query);
@@ -80,7 +79,9 @@ export const deleteContactController = async (req, res, next) => {
 
   if (!contact) {
     next(createHttpError(404, 'Contact not found'));
+    return;
   }
+  console.log(contact);
 
   res.status(204).send();
 };
