@@ -17,46 +17,27 @@ import { isValidId } from '../middlewares/isValidId.js';
 
 import { authenticate } from '../middlewares/authenticate.js';
 
-import { checkRoles } from '../middlewares/checkRoles.js';
-import { ROLES } from '../constants/index.js';
-
 const router = Router();
 router.use(authenticate);
 
-router.get(
-  '',
-  checkRoles(ROLES.TEACHER, ROLES.PARENT),
-  ctrlWrapper(getContactsController),
-);
+router.get('', ctrlWrapper(getContactsController));
 
-router.get(
-  '/:contactId',
-  checkRoles(ROLES.TEACHER, ROLES.PARENT),
-  isValidId,
-  ctrlWrapper(getContactsByIdController),
-);
+router.get('/:contactId', isValidId, ctrlWrapper(getContactsByIdController));
 
 router.post(
   '',
-  checkRoles(ROLES.TEACHER),
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 );
 
 router.patch(
   '/:contactId',
-  checkRoles(ROLES.TEACHER, ROLES.PARENT),
   isValidId,
   validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );
 
-router.delete(
-  ':contactId',
-  checkRoles(ROLES.TEACHER),
-  isValidId,
-  ctrlWrapper(deleteContactController),
-);
+router.delete('/:contactId', isValidId, ctrlWrapper(deleteContactController));
 
 router.use(authenticate);
 
